@@ -1,0 +1,361 @@
+.discover-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.discover-header {
+  margin-bottom: 16px;
+}
+
+.discover-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.discover-header p {
+  color: var(--text-muted, #888);
+  margin: 0;
+  font-size: 14px;
+}
+
+/* ---- filter bar ---- */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border, #e5e5e5);
+  border-radius: 20px;
+  background: var(--bg-card, #fff);
+  color: var(--text, #333);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.2s, border-color 0.2s;
+  text-decoration: none;
+}
+
+.filter-btn.active {
+  background: var(--primary, #fe2c55);
+  color: #fff;
+  border-color: var(--primary, #fe2c55);
+}
+
+.video-filter {
+  margin-left: auto;
+  background: var(--primary, #fe2c55) !important;
+  color: #fff !important;
+  border-color: var(--primary, #fe2c55) !important;
+}
+
+/* ---- card grid ---- */
+.user-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--text-muted, #888);
+  font-size: 15px;
+}
+
+/* ---- swipe card ---- */
+.swipe-card {
+  background: var(--bg-card, #fff);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  user-select: none;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.swipe-avatar {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.swipe-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swipe-avatar .avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+  color: #c2185b;
+  font-size: 64px;
+  font-weight: 700;
+}
+
+.online-dot {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 12px;
+  height: 12px;
+  background: #4caf50;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.match-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #ffb300;
+  color: #5d4037;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-transform: uppercase;
+}
+
+.swipe-info {
+  padding: 14px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.swipe-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.swipe-meta {
+  color: var(--text-muted, #888);
+  font-size: 13px;
+  margin: 0;
+}
+
+.swipe-bio {
+  color: var(--text-secondary, #555);
+  font-size: 13px;
+  margin: 4px 0 0;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.view-profile-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--primary, #fe2c55);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  margin-top: 6px;
+}
+
+/* ---- actions ---- */
+.swipe-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px 0 16px;
+}
+
+.action-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.action-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+.action-btn.dislike {
+  background: #fff;
+  color: #888;
+  border: 2px solid #e0e0e0;
+}
+
+.action-btn.like {
+  background: linear-gradient(135deg, #fe2c55, #ff0050);
+  color: #fff;
+  border: none;
+}
+
+/* ---- profile modal ---- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-card {
+  background: var(--bg-card, #fff);
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 360px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+.modal-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.modal-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-avatar .avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+  color: #c2185b;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.modal-card h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.modal-meta {
+  color: var(--text-muted, #888);
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+
+.modal-bio {
+  color: var(--text-secondary, #555);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 20px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 11px;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.like-btn {
+  background: linear-gradient(135deg, #fe2c55, #ff0050);
+  color: #fff;
+}
+
+.chat-btn {
+  background: #f0f0f0;
+  color: #333;
+  text-decoration: none;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted, #888);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 12px;
+}
+
+/* ---- responsive ---- */
+@media (max-width: 768px) {
+  .discover-page {
+    padding: 12px;
+  }
+
+  .user-cards {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .swipe-avatar {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .swipe-avatar {
+    height: 180px;
+  }
+
+  .action-btn {
+    width: 46px;
+    height: 46px;
+  }
+
+  .modal-card {
+    padding: 24px 20px;
+  }
+}
