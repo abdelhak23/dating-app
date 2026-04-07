@@ -20,23 +20,6 @@ const io = new Server(server, {
   pingInterval: 25000,
 });
 
-// Health check endpoint - define BEFORE CORS to avoid any issues
-app.get('/health', (req, res) => {
-  console.log('Health check requested');
-  res.json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    users: users.size,
-    online: onlineUsers.size
-  });
-});
-
-// Simple root endpoint for testing
-app.get('/', (req, res) => {
-  res.json({ message: 'Dating App API', status: 'running' });
-});
-
 // Environment variables (must be defined before use)
 const SECRET_KEY = process.env.JWT_SECRET || 'ab709b33-c3b3-4ca8-9fdb-e2e70154963a';
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
