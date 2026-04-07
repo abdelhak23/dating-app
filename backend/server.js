@@ -35,6 +35,11 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+
+// Health check endpoint for Railway
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Session middleware for passport

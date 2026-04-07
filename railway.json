@@ -2,8 +2,7 @@
   "$schema": "https://railway.app/railway.schema.json",
   "rootDirectory": "backend",
   "build": {
-    "builder": "NODE",
-    "nodeVersion": "18"
+    "builder": "NIXPACKS"
   },
   "deploy": {
     "startCommand": "npm start",
