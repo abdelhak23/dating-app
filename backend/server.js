@@ -20,6 +20,23 @@ const io = new Server(server, {
   pingInterval: 25000,
 });
 
+// Health check endpoint - define BEFORE CORS to avoid any issues
+app.get('/health', (req, res) => {
+  console.log('Health check requested');
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    users: users.size,
+    online: onlineUsers.size
+  });
+});
+
+// Simple root endpoint for testing
+app.get('/', (req, res) => {
+  res.json({ message: 'Dating App API', status: 'running' });
+});
+
 // Environment variables (must be defined before use)
 const SECRET_KEY = process.env.JWT_SECRET || 'ab709b33-c3b3-4ca8-9fdb-e2e70154963a';
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
@@ -31,7 +48,7 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || 'GOCSPX-0UtxKam
 const corsOrigins = process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : [FRONTEND_URL];
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl requests)
+    // Allow requests with no origin (like mobile apps, curl requests, Railway health checks)
     if (!origin) return callback(null, true);
     if (corsOrigins.indexOf(origin) === -1) {
       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
@@ -42,11 +59,6 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
-
-// Health check endpoint for Railway
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Session middleware for passport
