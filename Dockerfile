@@ -17,11 +17,8 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy dependencies from builder
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/server.js ./
-COPY --from=builder /app/uploads ./uploads
+# Copy everything from builder
+COPY --from=builder /app/ ./
 
 # Create uploads directory if it doesn't exist
 RUN mkdir -p uploads/avatars
