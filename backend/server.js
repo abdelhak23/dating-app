@@ -20,6 +20,13 @@ const io = new Server(server, {
   pingInterval: 25000,
 });
 
+// Environment variables (must be defined before use)
+const SECRET_KEY = process.env.JWT_SECRET || 'ab709b33-c3b3-4ca8-9fdb-e2e70154963a';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+const API_URL = process.env.API_URL || FRONTEND_URL.replace('3000', '3001') || 'http://localhost:3001';
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '200409858873-i1aqtfr4hnkr2pbfopnlbcn24iat0gdp.apps.googleusercontent.com';
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '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';
+
 // Configure CORS based on environment
 const corsOrigins = process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : [FRONTEND_URL];
 app.use(cors({
@@ -75,12 +82,6 @@ const onlineUsers = new Map();
 const rooms = new Map();
 const waitingUsers = new Set();
 const loginSessions = [];
-
-const SECRET_KEY = process.env.JWT_SECRET || 'ab709b33-c3b3-4ca8-9fdb-e2e70154963a';
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
-const API_URL = process.env.API_URL || FRONTEND_URL.replace('3000', '3001') || 'http://localhost:3001';
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '200409858873-i1aqtfr4hnkr2pbfopnlbcn24iat0gdp.apps.googleusercontent.com';
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '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';
 
 // Passport configuration
 passport.serializeUser((user, done) => {
