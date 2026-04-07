@@ -7,7 +7,6 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(true);
-  const [avatarPreview, setAvatarPreview] = useState(null);
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
@@ -18,7 +17,6 @@ export default function ProfilePage() {
       .then(data => {
         setProfile(data);
         setForm(data);
-        setAvatarPreview(data.avatarUrl || null);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -33,7 +31,6 @@ export default function ProfilePage() {
     if (res.ok) {
       const data = await res.json();
       setProfile(data);
-      setAvatarPreview(data.avatarUrl || null);
       setEditing(false);
     }
   };
@@ -67,10 +64,8 @@ export default function ProfilePage() {
 
       if (res.ok) {
         const data = await res.json();
-        // Update profile and preview
+        // Update profile and form
         setProfile(prev => ({ ...prev, avatarUrl: data.avatarUrl }));
-        setAvatarPreview(data.avatarUrl);
-        // Also update form to keep in sync
         setForm(prev => ({ ...prev, avatarUrl: data.avatarUrl }));
       } else {
         const error = await res.json();

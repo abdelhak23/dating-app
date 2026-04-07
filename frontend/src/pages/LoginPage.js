@@ -8,7 +8,7 @@ export default function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { login, googleLogin, API_URL } = useAuth();
+  const { login, API_URL } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {

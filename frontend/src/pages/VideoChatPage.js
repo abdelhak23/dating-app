@@ -9,7 +9,7 @@ const RTC_CONFIG = {
 };
 
 export default function VideoChatPage() {
-  const { token, API_URL, user } = useAuth();
+  const { token, API_URL } = useAuth();
   const navigate = useNavigate();
   const [state, setState] = useState('idle'); // idle, searching, connected, ended
   const [partner, setPartner] = useState(null);
@@ -27,6 +27,7 @@ export default function VideoChatPage() {
   const roomIdRef = useRef(null);
 
   // Connect socket
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const socket = io(`${API_URL}`, { auth: { token } });
     socketRef.current = socket;

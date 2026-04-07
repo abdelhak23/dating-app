@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Video, MessageCircle, Heart, X, ChevronRight, Star } from 'lucide-react';
 import './DiscoverPage.css';
@@ -42,13 +42,12 @@ function ProfileModal({ user, onClose }) {
 
 export default function DiscoverPage() {
   const { token, API_URL } = useAuth();
-  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState('any');
   const [loading, setLoading] = useState(true);
   const [viewingProfile, setViewingProfile] = useState(null);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const res = await fetch(`${API_URL}/api/users`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -66,9 +65,11 @@ export default function DiscoverPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [API_URL, token]);
 
-  useEffect(() => { fetchUsers(); }, []);
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   const handleLike = async (userId) => {
     try {
