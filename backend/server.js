@@ -20,7 +20,20 @@ const io = new Server(server, {
   pingInterval: 25000,
 });
 
-app.use(cors());
+// Configure CORS based on environment
+const corsOrigins = process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(',') : [FRONTEND_URL];
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl requests)
+    if (!origin) return callback(null, true);
+    if (corsOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
+}));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -59,6 +72,8 @@ const waitingUsers = new Set();
 const loginSessions = [];
 
 const SECRET_KEY = process.env.JWT_SECRET || 'ab709b33-c3b3-4ca8-9fdb-e2e70154963a';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+const API_URL = process.env.API_URL || FRONTEND_URL.replace('3000', '3001') || 'http://localhost:3001';
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '200409858873-i1aqtfr4hnkr2pbfopnlbcn24iat0gdp.apps.googleusercontent.com';
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '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';
 
@@ -75,7 +90,7 @@ passport.deserializeUser((obj, done) => {
 passport.use(new GoogleStrategy({
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_CLIENT_SECRET,
-  callbackURL: 'http://localhost:3001/api/auth/google/callback'
+  callbackURL: process.env.GOOGLE_CALLBACK_URL || `${API_URL}/api/auth/google/callback`
 }, async (accessToken, refreshToken, profile, done) => {
   try {
     // Check if user already exists by email
@@ -186,7 +201,7 @@ app.get('/api/auth/google/callback',
       console.error('Google OAuth: token missing from req.user');
       return res.redirect('/login?error=auth_failed');
     }
-    res.redirect(`http://localhost:3000/auth/google/callback?token=${token}&username=${encodeURIComponent(username)}`);
+    res.redirect(`${FRONTEND_URL}/auth/google/callback?token=${token}&username=${encodeURIComponent(username)}`);
   }
 );
 
@@ -227,7 +242,9 @@ app.post('/api/profile/avatar', authenticateToken, upload.single('avatar'), (req
   const user = [...users.values()].find(u => u.id === req.user.id);
   if (!user) return res.status(404).json({ error: 'User not found' });
   if (req.file) {
-    user.avatarUrl = `http://localhost:3001/uploads/avatars/${req.file.filename}`;
+    // Build avatar URL using API_URL environment variable or request origin
+    const baseUrl = req.get('origin') || API_URL;
+    user.avatarUrl = `${baseUrl}/uploads/avatars/${req.file.filename}`;
   }
   res.json({ avatarUrl: user.avatarUrl });
 });
